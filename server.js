@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -7,6 +8,7 @@ const { OAuth2Client } = require("google-auth-library");
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname)));
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI =
@@ -50,7 +52,7 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model("User", userSchema);
 
 app.get("/", (req, res) => {
-	res.send("Welcome to the Puzzles Backend!");
+	res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.post("/auth/google", async (req, res) => {
